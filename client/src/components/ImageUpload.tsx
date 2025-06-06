@@ -23,7 +23,7 @@ export function ImageUpload({ onImageSelect, selectedImage }: ImageUploadProps) 
     }
 
     onImageSelect(file);
-    
+
     const reader = new FileReader();
     reader.onload = (e) => {
       setPreviewUrl(e.target?.result as string);
@@ -44,7 +44,7 @@ export function ImageUpload({ onImageSelect, selectedImage }: ImageUploadProps) 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     setDragOver(false);
-    
+
     const files = e.dataTransfer.files;
     if (files.length > 0) {
       handleFileSelect(files[0]);
@@ -64,7 +64,7 @@ export function ImageUpload({ onImageSelect, selectedImage }: ImageUploadProps) 
           <Camera className="mr-3 text-blue-600" />
           Upload Your Photo
         </h2>
-        
+
         <div 
           className={`border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all ${
             dragOver 
@@ -86,14 +86,14 @@ export function ImageUpload({ onImageSelect, selectedImage }: ImageUploadProps) 
               <p className="text-sm text-slate-600 mt-4">Click to change image</p>
             </div>
           ) : (
-            <div>
-              <Upload className="text-4xl text-slate-400 mb-4 mx-auto" size={48} />
-              <p className="text-lg font-medium text-slate-700 mb-2">Drop your image here or click to browse</p>
-              <p className="text-sm text-slate-500">Supports JPG, PNG, WebP up to 10MB</p>
+            <div className="text-center">
+              <Upload className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500 mb-4" size={48} />
+              <p className="text-lg font-medium text-slate-700 dark:text-gray-300 mb-2">Drop your image here or click to browse</p>
+              <p className="text-sm text-slate-500 dark:text-gray-400">Supports JPG, PNG, WebP up to 10MB</p>
             </div>
           )}
         </div>
-        
+
         <input 
           type="file" 
           id="imageInput" 

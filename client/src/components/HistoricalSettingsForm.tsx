@@ -20,14 +20,14 @@ export function HistoricalSettingsForm({ formData, onFormChange }: HistoricalSet
   return (
     <Card className="mb-8">
       <CardContent className="p-8">
-        <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center">
+        <h2 className="text-xl font-semibold text-slate-800 dark:text-white mb-6 flex items-center">
           <Settings className="mr-3 text-blue-600" />
           Historical Settings
         </h2>
 
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <Label className="text-sm font-medium text-slate-700 mb-2">Year/War</Label>
+            <Label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Year/War</Label>
             <Input 
               type="text" 
               placeholder="e.g., World War I, 1863"
@@ -38,7 +38,7 @@ export function HistoricalSettingsForm({ formData, onFormChange }: HistoricalSet
           </div>
 
           <div>
-            <Label className="text-sm font-medium text-slate-700 mb-2">Side/Faction</Label>
+            <Label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Side/Faction</Label>
             <Input 
               type="text" 
               placeholder="e.g., Union, Confederate, British"
@@ -49,7 +49,7 @@ export function HistoricalSettingsForm({ formData, onFormChange }: HistoricalSet
           </div>
 
           <div>
-            <Label className="text-sm font-medium text-slate-700 mb-2">Military Rank</Label>
+            <Label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Military Rank</Label>
             <Input 
               type="text" 
               placeholder="e.g., Captain, Lieutenant, General"
@@ -60,7 +60,7 @@ export function HistoricalSettingsForm({ formData, onFormChange }: HistoricalSet
           </div>
 
           <div>
-            <Label className="text-sm font-medium text-slate-700 mb-2">Branch of Service</Label>
+            <Label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Branch of Service</Label>
             <Select value={formData.branch} onValueChange={(value) => onFormChange('branch', value)}>
               <SelectTrigger className="mt-1">
                 <SelectValue placeholder="Select Branch" />
@@ -80,7 +80,7 @@ export function HistoricalSettingsForm({ formData, onFormChange }: HistoricalSet
         </div>
 
         <div className="mt-6">
-          <Label className="text-sm font-medium text-slate-700 mb-2">Additional Details</Label>
+          <Label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Additional Details</Label>
           <Textarea 
             placeholder="Any specific details about uniform, decorations, setting, etc."
             value={formData.extraDetails}

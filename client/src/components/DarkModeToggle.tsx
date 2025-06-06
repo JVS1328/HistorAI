@@ -23,7 +23,7 @@ export function DarkModeToggle() {
 
   return (
     <div className="flex items-center space-x-2">
-      <span className="text-sm">Dark mode</span>
+      <span className="text-sm text-gray-700 dark:text-gray-300">Dark mode</span>
       <Switch checked={isDark} onCheckedChange={toggleDarkMode} />
     </div>
   );

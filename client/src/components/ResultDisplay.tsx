@@ -12,7 +12,7 @@ export function ResultDisplay({ imageUrl, onDownload, onGenerateNew }: ResultDis
   return (
     <Card>
       <CardContent className="p-8">
-        <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center">
+        <h2 className="text-xl font-semibold text-slate-800 dark:text-white mb-6 flex items-center">
           <Image className="mr-3 text-blue-600" />
           Your Historical Portrait
         </h2>
@@ -23,7 +23,7 @@ export function ResultDisplay({ imageUrl, onDownload, onGenerateNew }: ResultDis
             alt="Generated historical portrait" 
             className="max-w-full max-h-96 mx-auto rounded-xl shadow-lg mb-6"
           />
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               onClick={onDownload}
