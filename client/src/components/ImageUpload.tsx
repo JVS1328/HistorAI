@@ -99,7 +99,6 @@ export function ImageUpload({ onImageSelect, selectedImage }: ImageUploadProps) 
           id="imageInput" 
           className="hidden" 
           accept="image/*"
-          capture="environment"
           onChange={handleInputChange}
         />
       </CardContent>
