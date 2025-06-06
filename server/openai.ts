@@ -31,27 +31,37 @@ export async function generateHistoricalPortrait(
   const fullPrompt = `Transform this person into a historical military portrait from ${yearWar}, serving as a ${rank} in the ${side} ${branch}. ${extraDetails ? `Additional details: ${extraDetails}. ` : ""}${stylePrompts[artStyle]} The portrait should look authentic to the historical period, with accurate military uniform, insignia, and styling appropriate for the ${yearWar} era. Focus on creating a dignified, formal military portrait that captures the gravitas and honor of military service during this historical period. Maintain the person's key facial features, skin tone, hair color, and general appearance while transforming them into the historical military context.`;
 
   try {
-    // Convert base64 to buffer for the image edit API
+    // Convert base64 to buffer and save as temporary file
     const imageBuffer = Buffer.from(imageBase64, 'base64');
+    const tempImagePath = `/tmp/input_${Date.now()}.png`;
+    const fs = require('fs');
+    fs.writeFileSync(tempImagePath, imageBuffer);
 
     // Generate the historical portrait using the images edit API with gpt-image-1
     const imageResponse = await openai.images.edit({
       model: "gpt-image-1",
-      image: imageBuffer,
+      image: fs.createReadStream(tempImagePath),
       prompt: fullPrompt,
       size: "1024x1024",
       n: 1,
-      response_format: "b64_json"
     });
 
-    // Handle base64 response
-    const imageBase64Response = imageResponse.data?.[0]?.b64_json;
+    // Clean up temporary file
+    fs.unlinkSync(tempImagePath);
 
-    if (!imageBase64Response) {
+    // Get the generated image URL
+    const imageUrl = imageResponse.data?.[0]?.url;
+
+    if (!imageUrl) {
       throw new Error("No image data received from OpenAI");
     }
 
-    // Return the base64 encoded image directly
+    // Fetch the image and convert to base64
+    const imageDataResponse = await fetch(imageUrl);
+    const imageArrayBuffer = await imageDataResponse.arrayBuffer();
+    const imageBase64Response = Buffer.from(imageArrayBuffer).toString('base64');
+
+    // Return the base64 encoded image
     return { url: `data:image/png;base64,${imageBase64Response}` };
   } catch (error) {
     console.error("OpenAI API Error:", error);
