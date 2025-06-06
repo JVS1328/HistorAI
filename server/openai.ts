@@ -1,8 +1,6 @@
-
 import OpenAI, { toFile } from "openai";
 import fs from "fs";
 
-// Using gpt-image-1 as requested by the user
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY_ENV_VAR,
 });
@@ -34,7 +32,7 @@ export async function generateHistoricalPortrait(
 
   try {
     // Convert base64 to buffer and save as temporary file
-    const imageBuffer = Buffer.from(imageBase64, 'base64');
+    const imageBuffer = Buffer.from(imageBase64, "base64");
     const tempImagePath = `/tmp/input_${Date.now()}.png`;
     fs.writeFileSync(tempImagePath, imageBuffer);
 
