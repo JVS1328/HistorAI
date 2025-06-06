@@ -28,81 +28,31 @@ export async function generateHistoricalPortrait(
       "Create an old watercolor portrait in the style of historical military watercolor paintings. Use traditional watercolor techniques with dramatic lighting and muted, earthy palettes giving a grounded natural feel. Apply an authentic old parchment/paper texture background. The style should evoke vintage military watercolor portraits from historical archives.",
   };
 
-  const basePrompt = `Transform this person into a historical military portrait from ${yearWar}, serving as a ${rank} in the ${side} ${branch}. ${extraDetails ? `Additional details: ${extraDetails}. ` : ""}${stylePrompts[artStyle]} The portrait should look authentic to the historical period, with accurate military uniform, insignia, and styling appropriate for the ${yearWar} era. Focus on creating a dignified, formal military portrait that captures the gravitas and honor of military service during this historical period.`;
+  const fullPrompt = `Transform this person into a historical military portrait from ${yearWar}, serving as a ${rank} in the ${side} ${branch}. ${extraDetails ? `Additional details: ${extraDetails}. ` : ""}${stylePrompts[artStyle]} The portrait should look authentic to the historical period, with accurate military uniform, insignia, and styling appropriate for the ${yearWar} era. Focus on creating a dignified, formal military portrait that captures the gravitas and honor of military service during this historical period. Maintain the person's key facial features, skin tone, hair color, and general appearance while transforming them into the historical military context.`;
 
   try {
-    // First, analyze the uploaded image to understand the person's features
-    const analysisResponse = await openai.chat.completions.create({
-      model: "gpt-4.1-mini-2025-04-14",
-      messages: [
-        {
-          role: "user",
-          content: [
-            {
-              type: "text",
-              text: "Analyze this person's facial features, hair color, approximate age, and other distinguishing characteristics that should be preserved in a historical military portrait. Provide a detailed description.",
-            },
-            {
-              type: "image_url",
-              image_url: {
-                url: `data:image/jpeg;base64,${imageBase64}`,
-              },
-            },
-          ],
-        },
-      ],
-      max_tokens: 300,
-    });
+    // Convert base64 to buffer for the image edit API
+    const imageBuffer = Buffer.from(imageBase64, 'base64');
 
-    const personDescription = analysisResponse.choices[0].message.content;
-
-    // Generate the historical portrait with both description and original image
-    const fullPrompt = `${basePrompt}
-
-Person's characteristics to preserve: ${personDescription}
-
-Important: Maintain the person's key facial features, skin tone, hair color, and general appearance while transforming them into the historical military context. The uniform and setting should be historically accurate for a ${rank} during ${yearWar} fighting for the ${side} in the ${branch}. Base this portrait off both the detailed description provided above and the reference image of the person.`;
-
-    const response = await openai.chat.completions.create({
-      model: "gpt-4.1-mini-2025-04-14",
-      messages: [
-        {
-          role: "user",
-          content: [
-            {
-              type: "text",
-              text: fullPrompt,
-            },
-            {
-              type: "image_url",
-              image_url: {
-                url: `data:image/jpeg;base64,${imageBase64}`,
-              },
-            },
-          ],
-        },
-      ],
-      max_tokens: 1000,
-    });
-
-    const generatedContent = response.choices[0].message.content;
-    if (!generatedContent) {
-      throw new Error("No content received from OpenAI");
-    }
-
-    // Since we're using chat completion, we need to generate the actual image
-    const imageResponse = await openai.images.generate({
+    // Generate the historical portrait using the images edit API with gpt-image-1
+    const imageResponse = await openai.images.edit({
       model: "gpt-image-1",
-      prompt: generatedContent,
+      image: imageBuffer,
+      prompt: fullPrompt,
       size: "1024x1024",
-      quality: "auto",
+      n: 1,
+      response_format: "b64_json"
     });
 
-    const imageUrl = imageResponse.data?.[0]?.url;
-    if (!imageUrl) {
-      throw new Error("No image URL received from OpenAI");
+    // Handle base64 response
+    const imageBase64Response = imageResponse.data?.[0]?.b64_json;
+
+    if (!imageBase64Response) {
+      throw new Error("No image data received from OpenAI");
     }
-    return { url: imageUrl };
+
+    // Return the base64 encoded image directly
+    return { url: `data:image/png;base64,${imageBase64Response}` };
   } catch (error) {
     console.error("OpenAI API Error:", error);
     throw new Error(
