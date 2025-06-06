@@ -61,7 +61,7 @@ export async function generateHistoricalPortrait(
 
 Person's characteristics to preserve: ${personDescription}
 
-Important: Maintain the person's key facial features, skin tone, hair color, and general appearance while transforming them into the historical military context. The uniform and setting should be historically accurate for ${yearWar} ${side} ${branch}.`;
+Important: Maintain the person's key facial features, skin tone, hair color, and general appearance while transforming them into the historical military context. The uniform and setting should be historically accurate for a ${rank} during ${yearWar} fighting for the ${side} in the ${branch}.`;
 
     const response = await openai.images.generate({
       model: "gpt-image-1",
