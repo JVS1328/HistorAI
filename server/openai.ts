@@ -89,12 +89,11 @@ Important: Maintain the person's key facial features, skin tone, hair color, and
     if (!generatedContent) {
       throw new Error("No content received from OpenAI");
     }
-    
+
     // Since we're using chat completion, we need to generate the actual image
     const imageResponse = await openai.images.generate({
       model: "gpt-image-1",
       prompt: generatedContent,
-      n: 1,
       size: "1024x1024",
       quality: "auto",
     });
