@@ -99,15 +99,15 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen py-8 px-4 bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen py-4 sm:py-8 px-3 sm:px-4 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8 sm:mb-12">
         <div className="flex justify-end mb-4">
           <DarkModeToggle />
         </div>
-          <h1 className="text-4xl font-semibold text-slate-800 dark:text-white mb-4">HistorAI</h1>
-          <p className="text-lg text-slate-600 dark:text-gray-300 max-w-xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl font-semibold text-slate-800 dark:text-white mb-4">HistorAI</h1>
+          <p className="text-base sm:text-lg text-slate-600 dark:text-gray-300 max-w-xl mx-auto px-2">
             Transform your photo into a stunning historical military portrait using AI. 
             Simply upload your image and customize the historical details.
           </p>

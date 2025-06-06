@@ -56,3 +56,37 @@
     @apply font-sans antialiased bg-background text-foreground;
   }
 }
+
+
+/* Mobile-specific optimizations */
+@media (max-width: 640px) {
+  /* Improve touch targets */
+  button, [role="button"], input[type="file"] + label {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Optimize text sizing for mobile */
+  .text-xs {
+    font-size: 0.75rem;
+  }
+  
+  /* Improve spacing on small screens */
+  .space-y-4 > * + * {
+    margin-top: 0.75rem;
+  }
+  
+  /* Better modal and dialog sizing */
+  [role="dialog"] {
+    margin: 1rem;
+    max-width: calc(100vw - 2rem);
+  }
+}
+
+/* Ensure proper viewport handling */
+@supports (-webkit-touch-callout: none) {
+  /* iOS Safari specific fixes */
+  .min-h-screen {
+    min-height: -webkit-fill-available;
+  }
+}

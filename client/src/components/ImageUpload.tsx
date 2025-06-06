@@ -59,14 +59,14 @@ export function ImageUpload({ onImageSelect, selectedImage }: ImageUploadProps) 
 
   return (
     <Card className="mb-8">
-      <CardContent className="p-8">
-        <h2 className="text-xl font-semibold text-slate-800 dark:text-white mb-6 flex items-center">
+      <CardContent className="p-4 sm:p-8">
+        <h2 className="text-lg sm:text-xl font-semibold text-slate-800 dark:text-white mb-4 sm:mb-6 flex items-center">
           <Camera className="mr-3 text-blue-600" />
           Upload Your Photo
         </h2>
 
         <div 
-          className={`border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all ${
+          className={`border-2 border-dashed rounded-xl p-6 sm:p-12 text-center cursor-pointer transition-all ${
             dragOver 
               ? 'border-blue-500 bg-blue-50/30' 
               : 'border-slate-300 hover:border-blue-500 hover:bg-blue-50/30'
@@ -99,6 +99,7 @@ export function ImageUpload({ onImageSelect, selectedImage }: ImageUploadProps) 
           id="imageInput" 
           className="hidden" 
           accept="image/*"
+          capture="environment"
           onChange={handleInputChange}
         />
       </CardContent>
