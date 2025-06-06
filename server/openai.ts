@@ -56,22 +56,50 @@ export async function generateHistoricalPortrait(
 
     const personDescription = analysisResponse.choices[0].message.content;
 
-    // Generate the historical portrait
+    // Generate the historical portrait with both description and original image
     const fullPrompt = `${basePrompt}
 
 Person's characteristics to preserve: ${personDescription}
 
-Important: Maintain the person's key facial features, skin tone, hair color, and general appearance while transforming them into the historical military context. The uniform and setting should be historically accurate for a ${rank} during ${yearWar} fighting for the ${side} in the ${branch}.`;
+Important: Maintain the person's key facial features, skin tone, hair color, and general appearance while transforming them into the historical military context. The uniform and setting should be historically accurate for a ${rank} during ${yearWar} fighting for the ${side} in the ${branch}. Base this portrait off both the detailed description provided above and the reference image of the person.`;
 
-    const response = await openai.images.generate({
+    const response = await openai.chat.completions.create({
+      model: "gpt-4.1-mini-2025-04-14",
+      messages: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "text",
+              text: fullPrompt,
+            },
+            {
+              type: "image_url",
+              image_url: {
+                url: `data:image/jpeg;base64,${imageBase64}`,
+              },
+            },
+          ],
+        },
+      ],
+      max_tokens: 1000,
+    });
+
+    const generatedContent = response.choices[0].message.content;
+    if (!generatedContent) {
+      throw new Error("No content received from OpenAI");
+    }
+    
+    // Since we're using chat completion, we need to generate the actual image
+    const imageResponse = await openai.images.generate({
       model: "gpt-image-1",
-      prompt: fullPrompt,
+      prompt: generatedContent,
       n: 1,
       size: "1024x1024",
       quality: "auto",
     });
 
-    const imageUrl = response.data?.[0]?.url;
+    const imageUrl = imageResponse.data?.[0]?.url;
     if (!imageUrl) {
       throw new Error("No image URL received from OpenAI");
     }
