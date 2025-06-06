@@ -60,7 +60,7 @@ export function ImageUpload({ onImageSelect, selectedImage }: ImageUploadProps) 
   return (
     <Card className="mb-8">
       <CardContent className="p-8">
-        <h2 className="text-xl font-semibold text-slate-800 mb-6 flex items-center">
+        <h2 className="text-xl font-semibold text-slate-800 dark:text-white mb-6 flex items-center">
           <Camera className="mr-3 text-blue-600" />
           Upload Your Photo
         </h2>
