@@ -9,10 +9,11 @@ import { GenerateButton } from "@/components/GenerateButton";
 import { LoadingState } from "@/components/LoadingState";
 import { ResultDisplay } from "@/components/ResultDisplay";
 import type { GeneratePortraitResponse } from "@/lib/types";
+import { DarkModeToggle } from "@/components/DarkModeToggle";
 
 export default function Home() {
   const { toast } = useToast();
-  
+
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     yearWar: '',
@@ -27,7 +28,7 @@ export default function Home() {
   const generateMutation = useMutation({
     mutationFn: async () => {
       if (!selectedImage) throw new Error('No image selected');
-      
+
       const formDataToSend = new FormData();
       formDataToSend.append('image', selectedImage);
       formDataToSend.append('yearWar', formData.yearWar);
@@ -98,12 +99,15 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen py-8 px-4 bg-gray-50">
+    <div className="min-h-screen py-8 px-4 bg-gray-50 dark:bg-gray-900">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-semibold text-slate-800 mb-4">HistorAI</h1>
-          <p className="text-lg text-slate-600 max-w-xl mx-auto">
+        <div className="flex justify-end mb-4">
+          <DarkModeToggle />
+        </div>
+          <h1 className="text-4xl font-semibold text-slate-800 dark:text-white mb-4">HistorAI</h1>
+          <p className="text-lg text-slate-600 dark:text-gray-300 max-w-xl mx-auto">
             Transform your photo into a stunning historical military portrait using AI. 
             Simply upload your image and customize the historical details.
           </p>
@@ -141,7 +145,7 @@ export default function Home() {
         )}
 
         {/* Footer */}
-        <div className="text-center mt-12 text-slate-500 text-sm">
+        <div className="text-center mt-12 text-slate-500 dark:text-gray-400 text-sm">
           <p>Powered by OpenAI's newest image generation models</p>
         </div>
       </div>
