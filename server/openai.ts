@@ -1,6 +1,8 @@
-import OpenAI from "openai";
 
-// Using gpt-4.1-mini-2025-04-14 as requested by the user
+import OpenAI, { toFile } from "openai";
+import fs from "fs";
+
+// Using gpt-image-1 as requested by the user
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY_ENV_VAR,
 });
@@ -34,32 +36,29 @@ export async function generateHistoricalPortrait(
     // Convert base64 to buffer and save as temporary file
     const imageBuffer = Buffer.from(imageBase64, 'base64');
     const tempImagePath = `/tmp/input_${Date.now()}.png`;
-    const fs = require('fs');
     fs.writeFileSync(tempImagePath, imageBuffer);
+
+    // Convert file to OpenAI format using toFile
+    const imageFile = await toFile(fs.createReadStream(tempImagePath), null, {
+      type: "image/png",
+    });
 
     // Generate the historical portrait using the images edit API with gpt-image-1
     const imageResponse = await openai.images.edit({
       model: "gpt-image-1",
-      image: fs.createReadStream(tempImagePath),
+      image: imageFile,
       prompt: fullPrompt,
-      size: "1024x1024",
-      n: 1,
     });
 
     // Clean up temporary file
     fs.unlinkSync(tempImagePath);
 
-    // Get the generated image URL
-    const imageUrl = imageResponse.data?.[0]?.url;
+    // Get the base64 image data directly from response
+    const imageBase64Response = imageResponse.data?.[0]?.b64_json;
 
-    if (!imageUrl) {
+    if (!imageBase64Response) {
       throw new Error("No image data received from OpenAI");
     }
-
-    // Fetch the image and convert to base64
-    const imageDataResponse = await fetch(imageUrl);
-    const imageArrayBuffer = await imageDataResponse.arrayBuffer();
-    const imageBase64Response = Buffer.from(imageArrayBuffer).toString('base64');
 
     // Return the base64 encoded image
     return { url: `data:image/png;base64,${imageBase64Response}` };
