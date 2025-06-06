@@ -98,7 +98,8 @@ export function ImageUpload({ onImageSelect, selectedImage }: ImageUploadProps) 
           type="file" 
           id="imageInput" 
           className="hidden" 
-          accept="image/*"
+          accept="image/jpeg,image/jpg,image/png,image/webp,image/gif"
+          multiple={false}
           onChange={handleInputChange}
         />
       </CardContent>
