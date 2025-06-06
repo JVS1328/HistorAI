@@ -102,7 +102,7 @@ export default function Home() {
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-semibold text-slate-800 mb-4">Historical Portrait Generator</h1>
+          <h1 className="text-4xl font-semibold text-slate-800 mb-4">HistorAI</h1>
           <p className="text-lg text-slate-600 max-w-xl mx-auto">
             Transform your photo into a stunning historical military portrait using AI. 
             Simply upload your image and customize the historical details.
@@ -142,7 +142,7 @@ export default function Home() {
 
         {/* Footer */}
         <div className="text-center mt-12 text-slate-500 text-sm">
-          <p>Powered by OpenAI's DALL-E • Created with AI Technology</p>
+          <p>Powered by OpenAI's newest image generation models</p>
         </div>
       </div>
     </div>
