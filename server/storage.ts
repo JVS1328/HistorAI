@@ -47,6 +47,7 @@ export class MemStorage implements IStorage {
     const portrait: Portrait = { 
       ...insertPortrait, 
       id,
+      extraDetails: insertPortrait.extraDetails || null,
       createdAt: new Date().toISOString()
     };
     this.portraits.set(id, portrait);

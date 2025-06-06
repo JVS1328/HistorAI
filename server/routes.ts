@@ -89,7 +89,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Portrait generation error:', error);
       
-      if (error.message.includes('OpenAI')) {
+      if (error instanceof Error && error.message.includes('OpenAI')) {
         res.status(500).json({ 
           error: "Failed to generate portrait. Please try again later.",
           details: error.message

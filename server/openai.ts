@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 
-// the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+// Using gpt-4.1-mini-2025-04-14 as requested by the user
 const openai = new OpenAI({ 
   apiKey: process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY_ENV_VAR
 });
@@ -29,7 +29,7 @@ export async function generateHistoricalPortrait(params: GeneratePortraitParams)
   try {
     // First, analyze the uploaded image to understand the person's features
     const analysisResponse = await openai.chat.completions.create({
-      model: "gpt-4o",
+      model: "gpt-4.1-mini-2025-04-14",
       messages: [
         {
           role: "user",
@@ -67,9 +67,13 @@ Important: Maintain the person's key facial features, skin tone, hair color, and
       quality: "hd",
     });
 
-    return { url: response.data[0].url };
+    const imageUrl = response.data?.[0]?.url;
+    if (!imageUrl) {
+      throw new Error('No image URL received from OpenAI');
+    }
+    return { url: imageUrl };
   } catch (error) {
     console.error('OpenAI API Error:', error);
-    throw new Error(`Failed to generate portrait: ${error.message}`);
+    throw new Error(`Failed to generate portrait: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
